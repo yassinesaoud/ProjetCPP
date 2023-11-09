@@ -1,97 +1,85 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "reservations.h"
-#include<QString>
-#include <QtDebug>
-#include<QSqlQuery>
+#include "employe.h"
 #include <QMessageBox>
 #include <QIntValidator>
-#include <QSqlQueryModel>
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+#include<QObject>
+#include "employe.h"
+
+MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    ui->le_code->setValidator(new QIntValidator(100, 9999999, this));
-    ui->tab_reservation->setModel(R.afficher());
+     ui->setupUi(this);
+     ui->lineEdit_cin->setValidator(new QIntValidator(0,9999999,this));//cs
+     ui->lineEdit_cin_modif->setValidator(new QIntValidator(0,9999999,this));//cs
+     ui->table_employe->setModel(e.afficher());
 
-    Reservations R; // Crée une instance de la classe Reservations
-
-    // Assurez-vous que la connexion à la base de données est ouverte avec succès
-    QSqlDatabase db = QSqlDatabase::database(); // Récupère l'objet de la base de données
-    bool database_opened_successfully = db.isOpen();
-
-    if (database_opened_successfully) {
-        ui->tab_reservation->setModel(R.afficher());
-    } else {
-        // Gérez le cas où la connexion à la base de données a échoué
-        // Affichez un message d'erreur ou effectuez des actions nécessaires
-    }
 }
-
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-void MainWindow::on_pb_ajouter_clicked()
+void MainWindow::on_pushButton_ajouter_clicked()
 {
-    QString code_res=ui->le_code->text();
-    QString date_res=ui->le_date->text();
-    QString heure_res=ui->le_heure->text();
-    Reservations R(code_res,date_res,heure_res);
-    bool test=R.ajouter();
-    if(test)
-    {
-        QMessageBox ::information(nullptr,QObject::tr("ok"),
-                QObject::tr("Ajout effectue\n"
-                            "clickcancel to exist ."),QMessageBox::Cancel);
-        ui->tab_reservation->setModel(R.afficher());
+    int cin =ui->lineEdit_cin->text().toInt();
+    QString nom=ui->lineEdit_nom->text();
+    QString prenom=ui->lineEdit_prenom->text();
+    int age=ui->lineEdit_age->text().toInt();
+    QString sante=ui->lineEdit_sante->text();
+    employe e(cin,nom,prenom,age,sante);
+    bool test=e.ajouter();
+    if(test){
+        QMessageBox::information(nullptr, QObject::tr("OK"),QObject::tr("Ajout effectue\n""Clicke Cancel to exite"), QMessageBox::Cancel);
+        ui->table_employe->setModel(e.afficher());
+
+
+    }else{ QMessageBox::critical(nullptr , QObject::tr("Not Ok "),QObject::tr("ajouter non effectie.\n""click cancel  ."),QMessageBox::Cancel);
+
     }
-    else
-        QMessageBox ::critical(nullptr,QObject::tr("ok"),
-                QObject::tr("Ajout non effectue\n"
-                            "clickcancel to exist ."),QMessageBox::Cancel);
 }
 
-void MainWindow::on_pb_supprimer_clicked()
+void MainWindow::on_pushButton_supp_clicked()
 {
-    Reservations R1; R1.setcode_res(ui->le_code_res_supp->text());
-    bool test=R1.supprimer(R1.getcode_res());
-    if(test)
-    {
-        QMessageBox ::information(nullptr,QObject::tr("ok"),
-                QObject::tr("suppression effectue\n"
-                            "clickcancel to exist ."),QMessageBox::Cancel);
-        ui->tab_reservation->setModel(R.afficher());
+    int id=ui->lineEdit_cin_supp->text().toInt();
+    bool test=e.supprimer(id);
+    if(test){
+        QMessageBox::information(nullptr, QObject::tr("OK"),QObject::tr("supprimer effectue\n""Clicke Cancel to exite"), QMessageBox::Cancel); ui->table_employe->setModel(e.afficher());
+
+
+    }else{ QMessageBox::critical(nullptr , QObject::tr("Not Ok "),QObject::tr("supprimer non effectie.\n""click cancel  ."),QMessageBox::Cancel);
 
     }
-    else
-        QMessageBox ::critical(nullptr,QObject::tr("ok"),
-                QObject::tr("suppression non effectue\n"
-                            "clickcancel to exist ."),QMessageBox::Cancel);
+}
+void MainWindow::on_pushButton_modifier_clicked()
+{
+    int newcin =ui->lineEdit_cin_modif->text().toInt();
+    QString newnom=ui->lineEdit_nom_modif->text();
+    QString newprenom=ui->lineEdit_prenom_modif->text();
+    int newage=ui->lineEdit_age_modif->text().toInt();
+    QString newsante=ui->lineEdit_sante_modif->text();
+    employe E(newcin,newnom,newprenom,newage,newsante);
+    bool test=E.modifier();
+    if(test){
+        QMessageBox::information(nullptr, QObject::tr("OK"),QObject::tr("modifier effectue\n""Clicke Cancel to exite"), QMessageBox::Cancel);
+        ui->table_employe->setModel(e.afficher());
+
+
+    }else{ QMessageBox::critical(nullptr , QObject::tr("Not Ok "),QObject::tr("modifize non effectie.\n""click cancel  ."),QMessageBox::Cancel);
+
+    }
 }
 
-
-
-void MainWindow::on_pb_modify_clicked()
+void MainWindow::on_pushButton_chercher_clicked()
 {
-    QString code_res=ui->le_newcode_res->text();
-    QString date_res=ui->le_newdate_res->text();
-    QString heure_res=ui->le_newheure_res->text();
-    Reservations r(code_res,date_res,heure_res);
-    bool test=r.modifier();
+    int id=ui->lineEdit_cin_chercher->text().toInt();
+    bool test=E.chercher(id);
     if(test)
     {
-        QMessageBox ::information(nullptr,QObject::tr("ok"),
-                QObject::tr("Reservation modified successfully.\n"
-                            "clickcancel to exist ."),QMessageBox::Cancel);
-        ui->tab_reservation->setModel(R.afficher());
+        QMessageBox::information(nullptr, QObject::tr("OK"),QObject::tr("chercher effectue\n""Clicke Cancel to exite"), QMessageBox::Cancel);
+        ui->table_employe_chercher->setModel(e.rechercher());
+    }else{ QMessageBox::critical(nullptr , QObject::tr("Not Ok "),QObject::tr("chercher non effectie.\n""click cancel  ."),QMessageBox::Cancel);
+
     }
-    else
-        QMessageBox ::critical(nullptr,QObject::tr("ok"),
-                QObject::tr("Failed to modify reservation.q\n"
-                            "clickcancel to exist ."),QMessageBox::Cancel);
 
 }
