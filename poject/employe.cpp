@@ -1,0 +1,123 @@
+#include "mainwindow.h"
+#include"connection.h"
+#include<QApplication>
+#include <QMessageBox>
+#include "employe.h"
+#include<QSqlQuery>
+#include<QDebug>
+
+
+
+employe::employe()
+{
+    cin=0;
+    nom="";
+    prenom="";
+    age=0;
+    sante="";
+}
+employe::employe(int cin,QString nom,QString prenom,int age,QString sante)
+{
+    this->cin=cin;
+    this->nom=nom;
+    this->prenom=prenom;
+    this->age=age;
+    this->sante=sante;
+}
+employe::~employe()
+{}
+int employe::getcin() {return cin;}
+void employe::Setcin(int cin){this->cin=cin;}
+QString employe::Getnom(){return nom;}
+void employe::Setnom(QString nom){this->nom=nom;}
+QString employe::Getprenom(){return prenom;}
+void employe::Setprenom(QString prenom) {this->prenom=prenom;}
+int employe::Getage(){return age;}
+void employe::Setage(int age){this->age=age;}
+QString employe::Getsante(){return sante;}
+void employe::Setsante(QString sante){this->sante=sante;}
+
+bool employe::ajouter() {
+    QSqlQuery query;
+    QString res = QString::number(cin);
+
+    query.prepare("INSERT INTO GS_EMPLOYE (cin, nom, prenom, age, santer) "
+                  "VALUES (:cin, :nom, :prenom, :age, :santer)"); // Correction de la syntaxe
+    query.bindValue(":cin", cin);
+    query.bindValue(":nom", nom);
+    query.bindValue(":prenom", prenom);
+    query.bindValue(":age", age);
+    query.bindValue(":santer", sante);
+    return query.exec();
+}
+bool employe::supprimer(int cin)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM gs_employe WHERE CIN = :cin");
+    query.bindValue(":cin", cin);
+    return query.exec();
+}
+QSqlQueryModel* employe::afficher()
+{
+    QSqlQueryModel* model=new QSqlQueryModel();
+         model->setQuery("SELECT * FROM gs_employe");
+         model->setHeaderData(0, Qt::Horizontal, QObject::tr("cin"));
+         model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+         model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+         model->setHeaderData(3, Qt::Horizontal, QObject::tr("age"));
+         model->setHeaderData(4, Qt::Horizontal, QObject::tr("santer"));
+
+    return model;
+}
+bool employe::modifier()
+{
+
+    QSqlQuery query;
+    query.prepare("UPDATE GS_EMPLOYE SET NOM = :nom, PRENOM = :prenom, AGE = :age, SANTER = :santer WHERE CIN = :cin");
+    query.bindValue(":cin", cin);
+    query.bindValue(":nom", nom);
+    query.bindValue(":prenom", prenom);
+    query.bindValue(":age", age);
+    query.bindValue(":santer", sante);
+
+    return query.exec();
+
+}
+bool employe::chercher(int n)
+{
+
+    QSqlQuery query;
+    query.prepare("SELECT * FROM GS_EMPLOYE WHERE cin = :cin");
+    query.bindValue(":cin", n);
+
+
+    return query.exec();
+}
+QSqlQueryModel * employe::rechercher()
+{
+    QSqlQueryModel* model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM gs_employe");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("cin"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("age"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("santer"));
+    return model;
+
+}
+/*QSqlQueryModel * Fournisseurs::rechercherFournisseur(QString chaine)
+{
+    QSqlQueryModel * model=new QSqlQueryModel();
+    model->setQuery("SELECT * from GS_FOURNISSEURS where ( ID LIKE'%"+chaine+"%' OR nomF LIKE'%"+chaine+"%' OR nom_entrprise LIKE'%"+chaine+"%' OR adresse LIKE'%"+chaine+"%' OR num LIKE'%"+chaine+"%') ");
+
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("ID"));
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("nomF"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("nom_entrprise"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("adresse"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("email"));
+    model->setHeaderData(5,Qt::Horizontal,QObject::tr("num"));
+
+    return model ;
+}*/
+
+
