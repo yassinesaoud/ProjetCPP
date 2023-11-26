@@ -1,15 +1,13 @@
 #ifndef SMTP_H
 #define SMTP_H
+
 #include <QtNetwork/QAbstractSocket>
 #include <QtNetwork/QSslSocket>
-#include <QSslSocket>
 #include <QString>
 #include <QTextStream>
 #include <QDebug>
 #include <QtWidgets/QMessageBox>
 #include <QByteArray>
-
-
 
 class Smtp : public QObject
 {
@@ -28,6 +26,7 @@ signals:
     void status( const QString &);
 
 private slots:
+
     void stateChanged(QAbstractSocket::SocketState socketState);
     void errorReceived(QAbstractSocket::SocketError socketError);
     void disconnected();
@@ -51,3 +50,4 @@ private:
 
 };
 #endif
+

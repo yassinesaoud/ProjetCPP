@@ -39,29 +39,28 @@ bool Reservations::ajouter()
          bool inserted = query.exec();
 
              // Vérifie si l'ajout de la réservation s'est fait avec succès
-             if (inserted) {
-                 // Si la réservation a été ajoutée avec succès, envoyez un e-mail de notification
-                 QString destinataire = "yassin.saoud@esprit.tn"; // Adresse e-mail du destinataire
-                 QString sujet = "Nouvelle réservation ajoutée";
-                 QString contenu = "Une nouvelle réservation a été ajoutée.\n"
-                                   "Code de réservation : " + code_res + "\n"
-                                   "Date : " + date_res + "\n"
-                                   "Heure : " + heure_res + "\n";
+         if (inserted) {
+             // Si la réservation a été ajoutée avec succès, envoyez un e-mail de notification
+             QString destinataire = "yassin.saoud@esprit.tn"; // Adresse e-mail du destinataire
+             QString sujet = "Nouvelle réservation ajoutée";
+             QString contenu = "Une nouvelle réservation a été ajoutée.\n"
+                               "Code de réservation : " + code_res + "\n"
+                               "Date : " + date_res + "\n"
+                               "Heure : " + heure_res + "\n";
 
-                 // Créez une instance de la classe Smtp en fournissant les informations de connexion SMTP nécessaires
-                 //Smtp *smtp = new Smtp("yassinesaoud47@gmail.com", "Yssaifgay", "smtp.gmail.com", 465);
-                 Smtp *smtp = new Smtp("ionknodontaskme@gmail.com","9hSbIscQ3PXxjfzv","smtp-relay.brevo.com",587);
-                 qDebug("brevo");
-                 // Envoyez l'e-mail avec les détails de la réservation
-                // smtp->sendMail("yassinesaoud47@gmail.com", destinataire, sujet, contenu);
-                 smtp->sendMail("yassinesaoud47@gmail.com", destinataire, sujet, contenu);
-                 // Supprimez l'instance de Smtp après avoir terminé l'envoi de l'e-mail
-                 delete smtp;
-             }
+             // Créez une instance de la classe Smtp en fournissant les informations de connexion SMTP nécessaires
+             Smtp *smtp = new Smtp("yassin.saoud@esprit.tn", "Ys25481446", "smtp.gmail.com", 465);
 
-             // Retourne le résultat de l'ajout de la réservation
-             return inserted;
-}
+             //qDebug("brevo");
+             // Envoyez l'e-mail avec les détails de la réservation
+             smtp->sendMail("yassin.saoud@esprit.tn", destinataire, sujet, contenu);
+             // Supprimez l'instance de Smtp après avoir terminé l'envoi de l'e-mail
+
+         }
+
+         // Retourne le résultat de l'ajout de la réservation
+         return inserted;
+     }
 bool Reservations::supprimer(QString code_res)
 {
     QSqlQuery query;
