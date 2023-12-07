@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>ajouter.png</file>
+        <file>download__5_-removebg-preview.png</file>
+        <file>gui_edit_icon_157165-removebg-preview.png</file>
+        <file>icon_supp-removebg-preview.png</file>
+        <file>iconpdf.png</file>
+        <file>logo.qrc</file>
+        <file>modifier.png</file>
+        <file>rechercher.png</file>
+    </qresource>
+</RCC>
