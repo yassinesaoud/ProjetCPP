@@ -7,7 +7,13 @@
 
 QT       += core gui sql
 QT += sql
+QT += widgets
 
+QT += core gui sql multimedia multimediawidgets printsupport charts widgets axcontainer serialport
+QT += core gui charts
+QT += multimedia multimediawidgets
+
+IMAGES += images/
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,15 +32,37 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    arduino.cpp \
     connection.cpp \
     employe.cpp \
+    facture.cpp \
+    flotee.cpp \
+    generateurpdf.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    notification.cpp \
+    promotions.cpp \
+    qrcode.cpp \
+    reservations.cpp \
+    smtp.cpp \
+    trajets.cpp \
+    ventevehicule.cpp
 
 HEADERS += \
+    arduino.h \
     connection.h \
     employe.h \
-    mainwindow.h
+    facture.h \
+    flotee.h \
+    generateurpdf.h \
+    mainwindow.h \
+    notification.h \
+    promotions.h \
+    qrcode.h \
+    reservations.h \
+    smtp.h \
+    trajets.h \
+    ventevehicule.h
 
 FORMS += \
     mainwindow.ui

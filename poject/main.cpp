@@ -3,6 +3,10 @@
 #include<QApplication>
 #include <QMessageBox>
 #include "employe.h"
+#include "ventevehicule.h"
+#include "facture.h"
+#include"trajets.h"
+
 
 
 int main(int argc, char *argv[])
@@ -27,3 +31,5 @@ int main(int argc, char *argv[])
 
    return a.exec();
 }
+
+
