@@ -1,0 +1,14 @@
+INPUT(
+./release\arduino.o
+./release\connection.o
+./release\employe.o
+./release\facture.o
+./release\generateurpdf.o
+./release\main.o
+./release\mainwindow.o
+./release\notification.o
+./release\qrcode.o
+./release\trajets.o
+./release\ventevehicule.o
+./release\moc_mainwindow.o
+);
